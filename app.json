@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "CCB",
+    "slug": "ccb",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.ccb.app",
+      "softwareKeyboardLayoutMode": "resize",
+      "adaptiveIcon": {
+        "backgroundColor": "#0D5740"
+      }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
+  }
+}
