@@ -46,9 +46,16 @@ export type StatusViewerItem = {
     | null;
   mediaUrl: string | null;
 };
+import CartScreen from
+  '../screens/main/CartScreen';
 
+import {
+  CartProvider,
+} from '../context/CartContext';
 export type RootStackParamList = {
   MainTabs: undefined;
+
+  Cart: undefined;
 
   EditProfile: undefined;
 
@@ -102,6 +109,7 @@ export default function RootNavigator({
   onLogout,
 }: Props) {
   return (
+     <CartProvider>
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
@@ -184,6 +192,14 @@ export default function RootNavigator({
             'slide_from_right',
         }}
       />
+      <Stack.Screen
+  name="Cart"
+  component={CartScreen}
+  options={{
+    animation:
+      'slide_from_right',
+  }}
+/>
 
       <Stack.Screen
         name="SendMoney"
@@ -194,6 +210,7 @@ export default function RootNavigator({
           presentation: 'modal',
         }}
       />
-    </Stack.Navigator>
+      </Stack.Navigator>
+  </CartProvider>
   );
 }
