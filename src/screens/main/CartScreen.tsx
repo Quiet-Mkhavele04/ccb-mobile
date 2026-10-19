@@ -448,9 +448,8 @@ export default function CartScreen() {
           <Pressable
             style={styles.checkoutButton}
             onPress={() =>
-              Alert.alert(
-                'Cart ready',
-                'The checkout screen is the next step.'
+              navigation.navigate(
+                'Checkout'
               )
             }
           >

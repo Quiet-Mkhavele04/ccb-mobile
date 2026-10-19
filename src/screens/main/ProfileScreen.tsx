@@ -58,6 +58,14 @@ const SETTINGS_ROWS: SettingsRow[] = [
     label: 'Edit profile',
   },
   {
+    icon: 'receipt-outline',
+    label: 'My orders',
+  },
+  {
+    icon: 'storefront-outline',
+    label: 'Seller dashboard',
+  },
+  {
     icon: 'notifications-outline',
     label: 'Notifications',
   },
@@ -130,6 +138,22 @@ export default function ProfileScreen({
     if (label === 'Edit profile') {
       navigation.navigate(
         'EditProfile'
+      );
+
+      return;
+    }
+
+    if (label === 'My orders') {
+      navigation.navigate(
+        'Orders'
+      );
+
+      return;
+    }
+
+    if (label === 'Seller dashboard') {
+      navigation.navigate(
+        'SellerDashboard'
       );
 
       return;

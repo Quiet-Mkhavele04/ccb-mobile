@@ -21,6 +21,36 @@ import CommunityDetailScreen from
 import BusinessProfileScreen from
   '../screens/main/BusinessProfileScreen';
 
+import ProductDetailsScreen from
+  '../screens/main/ProductDetailsScreen';
+
+import CartScreen from
+  '../screens/main/CartScreen';
+
+import CheckoutScreen from
+  '../screens/main/CheckoutScreen';
+
+import OrderConfirmationScreen from
+  '../screens/main/OrderConfirmationScreen';
+
+import OrdersScreen from
+  '../screens/main/OrdersScreen';
+
+import OrderDetailsScreen from
+  '../screens/main/OrderDetailsScreen';
+
+import CreateStoreScreen from
+  '../screens/main/CreateStoreScreen';
+
+import SellerDashboardScreen from
+  '../screens/main/SellerDashboardScreen';
+
+import AddProductScreen from
+  '../screens/main/AddProductScreen';
+
+import EditProductScreen from
+  '../screens/main/EditProductScreen';
+
 import SendMoneyScreen from
   '../screens/main/SendMoneyScreen';
 
@@ -29,6 +59,14 @@ import EditProfileScreen from
 
 import AddContactScreen from
   '../screens/main/AddContactScreen';
+
+import {
+  CartProvider,
+} from '../context/CartContext';
+
+import type {
+  OrderSummary,
+} from '../api/ordersApi';
 
 export type StatusViewerItem = {
   statusId: number;
@@ -40,22 +78,17 @@ export type StatusViewerItem = {
   timestamp: string;
   isMine: boolean;
   viewed: boolean;
+
   mediaType:
     | 'image'
     | 'video'
     | null;
+
   mediaUrl: string | null;
 };
-import CartScreen from
-  '../screens/main/CartScreen';
 
-import {
-  CartProvider,
-} from '../context/CartContext';
 export type RootStackParamList = {
   MainTabs: undefined;
-
-  Cart: undefined;
 
   EditProfile: undefined;
 
@@ -63,18 +96,44 @@ export type RootStackParamList = {
 
   CreateStatus: undefined;
 
+  ProductDetails: {
+    productId: number;
+  };
+
+  Cart: undefined;
+
+  Checkout: undefined;
+
+  OrderConfirmation: {
+    order: OrderSummary;
+  };
+
+  Orders: undefined;
+
+  OrderDetails: {
+    orderId: number;
+  };
+
+  CreateStore: undefined;
+
+  SellerDashboard: undefined;
+
+  AddProduct: undefined;
+
+  EditProduct: {
+    productId: number;
+  };
+
   Chat: {
-  contactId: number;
-  name: string;
-  avatarColor: string;
-  photoUrl: string | null;
-  isOnline: boolean;
-};
+    contactId: number;
+    name: string;
+    avatarColor: string;
+    photoUrl: string | null;
+    isOnline: boolean;
+  };
 
   StatusViewer: {
-    statuses:
-      StatusViewerItem[];
-
+    statuses: StatusViewerItem[];
     initialIndex: number;
   };
 
@@ -109,108 +168,218 @@ export default function RootNavigator({
   onLogout,
 }: Props) {
   return (
-     <CartProvider>
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="MainTabs">
-        {() => (
-          <BottomTabs
-            onLogout={onLogout}
-          />
-        )}
-      </Stack.Screen>
-
-      <Stack.Screen
-        name="AddContact"
-        component={AddContactScreen}
-        options={{
-          animation:
-            'slide_from_bottom',
-          presentation: 'modal',
+    <CartProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
         }}
-      />
+      >
+        <Stack.Screen
+          name="MainTabs"
+        >
+          {() => (
+            <BottomTabs
+              onLogout={onLogout}
+            />
+          )}
+        </Stack.Screen>
 
-      <Stack.Screen
-        name="CreateStatus"
-        component={CreateStatusScreen}
-        options={{
-          animation:
-            'slide_from_bottom',
-          presentation: 'modal',
-        }}
-      />
+        <Stack.Screen
+          name="AddContact"
+          component={
+            AddContactScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
 
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfileScreen}
-        options={{
-          animation:
-            'slide_from_right',
-        }}
-      />
+        <Stack.Screen
+          name="CreateStatus"
+          component={
+            CreateStatusScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
 
-      <Stack.Screen
-        name="Chat"
-        component={ChatScreen}
-        options={{
-          animation:
-            'slide_from_right',
-        }}
-      />
+        <Stack.Screen
+          name="EditProfile"
+          component={
+            EditProfileScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
 
-      <Stack.Screen
-        name="StatusViewer"
-        component={StatusViewerScreen}
-        options={{
-          animation: 'fade',
-          presentation:
-            'fullScreenModal',
-        }}
-      />
+        <Stack.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
 
-      <Stack.Screen
-        name="CommunityDetail"
-        component={
-          CommunityDetailScreen
-        }
-        options={{
-          animation:
-            'slide_from_right',
-        }}
-      />
+        <Stack.Screen
+          name="StatusViewer"
+          component={
+            StatusViewerScreen
+          }
+          options={{
+            animation: 'fade',
+            presentation:
+              'fullScreenModal',
+          }}
+        />
 
-      <Stack.Screen
-        name="BusinessProfile"
-        component={
-          BusinessProfileScreen
-        }
-        options={{
-          animation:
-            'slide_from_right',
-        }}
-      />
-      <Stack.Screen
-  name="Cart"
-  component={CartScreen}
-  options={{
-    animation:
-      'slide_from_right',
-  }}
-/>
+        <Stack.Screen
+          name="CommunityDetail"
+          component={
+            CommunityDetailScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
 
-      <Stack.Screen
-        name="SendMoney"
-        component={SendMoneyScreen}
-        options={{
-          animation:
-            'slide_from_bottom',
-          presentation: 'modal',
-        }}
-      />
+        <Stack.Screen
+          name="BusinessProfile"
+          component={
+            BusinessProfileScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="ProductDetails"
+          component={
+            ProductDetailsScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="Checkout"
+          component={CheckoutScreen}
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="OrderConfirmation"
+          component={
+            OrderConfirmationScreen
+          }
+          options={{
+            animation: 'fade',
+            gestureEnabled: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Orders"
+          component={OrdersScreen}
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="OrderDetails"
+          component={
+            OrderDetailsScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateStore"
+          component={
+            CreateStoreScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
+
+        <Stack.Screen
+          name="SellerDashboard"
+          component={
+            SellerDashboardScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="AddProduct"
+          component={
+            AddProductScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
+
+        <Stack.Screen
+          name="EditProduct"
+          component={
+            EditProductScreen
+          }
+          options={{
+            animation:
+              'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="SendMoney"
+          component={
+            SendMoneyScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
       </Stack.Navigator>
-  </CartProvider>
+    </CartProvider>
   );
 }

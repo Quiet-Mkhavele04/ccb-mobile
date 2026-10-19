@@ -6,6 +6,9 @@ import {
   getAccessToken,
 } from '../storage/authStorage';
 
+import * as FileSystem from
+  'expo-file-system/legacy';
+
 export type Product = {
   productId: number;
   businessId: number;
@@ -23,6 +26,8 @@ export type Product = {
   stockQuantity: number;
   isAvailable: boolean;
   isFeatured: boolean;
+  createdAt?: string;
+  updatedAt?: string | null;
 };
 
 export type ProductsResponse = {
@@ -31,6 +36,23 @@ export type ProductsResponse = {
 
 export type ProductResponse = {
   product: Product;
+};
+
+export type MyProductsResponse = {
+  business: {
+    businessId: number;
+    name: string;
+  };
+  products: Product[];
+};
+
+export type CreateProductInput = {
+  name: string;
+  description?: string;
+  category: string;
+  price: number;
+  stockQuantity: number;
+  isAvailable: boolean;
 };
 
 export type ProductFilters = {
@@ -211,6 +233,155 @@ export async function getBusinessProducts(
         },
       }
     );
+
+  return readResponse(response);
+}
+
+export async function getMyProducts():
+  Promise<MyProductsResponse> {
+  const authorization =
+    await getAuthorization();
+
+  const response = await fetch(
+    `${API_BASE_URL}/Products/mine`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: authorization,
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  return readResponse(response);
+}
+
+export async function createProduct(
+  input: CreateProductInput
+): Promise<ProductResponse> {
+  const authorization = await getAuthorization();
+  const response = await fetch(`${API_BASE_URL}/Products`, {
+    method: 'POST',
+    headers: {
+      Authorization: authorization,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(input),
+  });
+
+  return readResponse(response);
+}
+
+export async function uploadProductImage(
+  productId: number,
+  imageUri: string,
+  mimeType = 'image/jpeg',
+  fileName = 'product.jpg'
+): Promise<{ message: string; imageUrl: string }> {
+  const authorization = await getAuthorization();
+  const response = await FileSystem.uploadAsync(
+    `${API_BASE_URL}/Products/${productId}/image`,
+    imageUri,
+    {
+      httpMethod: 'POST',
+      uploadType:
+        FileSystem.FileSystemUploadType.MULTIPART,
+      fieldName: 'image',
+      mimeType,
+      parameters: {
+        fileName,
+      },
+      headers: {
+        Authorization: authorization,
+        Accept: 'application/json',
+      },
+    }
+  );
+
+  let data: any;
+
+  try {
+    data = response.body
+      ? JSON.parse(response.body)
+      : {};
+  } catch {
+    throw new ProductsApiError(
+      'The server returned an invalid response.',
+      response.status
+    );
+  }
+
+  if (
+    response.status < 200 ||
+    response.status >= 300
+  ) {
+    throw new ProductsApiError(
+      data.message ||
+        `Image upload failed (${response.status}).`,
+      response.status
+    );
+  }
+
+  return data;
+}
+
+export async function updateProduct(
+  productId: number,
+  input: CreateProductInput
+): Promise<ProductResponse> {
+  const authorization = await getAuthorization();
+  const response = await fetch(
+    `${API_BASE_URL}/Products/${productId}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: authorization,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input),
+    }
+  );
+
+  return readResponse(response);
+}
+
+export async function setProductAvailability(
+  productId: number,
+  isAvailable: boolean
+): Promise<{ message: string; productId: number; isAvailable: boolean }> {
+  const authorization = await getAuthorization();
+  const response = await fetch(
+    `${API_BASE_URL}/Products/${productId}/availability`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: authorization,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ isAvailable }),
+    }
+  );
+
+  return readResponse(response);
+}
+
+export async function deleteProduct(
+  productId: number
+): Promise<{ message: string; productId: number }> {
+  const authorization = await getAuthorization();
+  const response = await fetch(
+    `${API_BASE_URL}/Products/${productId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: authorization,
+        Accept: 'application/json',
+      },
+    }
+  );
 
   return readResponse(response);
 }

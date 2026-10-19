@@ -7,6 +7,7 @@ import React, {
 import {
   ActivityIndicator,
   FlatList,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -33,6 +34,10 @@ import {
   Product,
   ProductsApiError,
 } from '../../api/productsApi';
+
+import {
+  resolveMediaUrl,
+} from '../../api/mediaUrl';
 
 import {
   light,
@@ -468,7 +473,16 @@ export default function DiscoverScreen() {
                             styles.featuredCard
                           }
                         >
-                          <View
+                          <Pressable
+                            onPress={() =>
+                              navigation.navigate(
+                                'ProductDetails',
+                                {
+                                  productId:
+                                    product.productId,
+                                }
+                              )
+                            }
                             style={[
                               styles
                                 .featuredImage,
@@ -480,15 +494,31 @@ export default function DiscoverScreen() {
                               },
                             ]}
                           >
-                            <Ionicons
-                              name={
-                                getProductIcon(
-                                  product.category
-                                )
-                              }
-                              size={38}
-                              color="rgba(255,255,255,0.85)"
-                            />
+                            {resolveMediaUrl(
+                              product.imageUrl
+                            ) ? (
+                              <Image
+                                source={{
+                                  uri: resolveMediaUrl(
+                                    product.imageUrl
+                                  )!,
+                                }}
+                                style={
+                                  styles.marketImage
+                                }
+                                resizeMode="cover"
+                              />
+                            ) : (
+                              <Ionicons
+                                name={
+                                  getProductIcon(
+                                    product.category
+                                  )
+                                }
+                                size={38}
+                                color="rgba(255,255,255,0.85)"
+                              />
+                            )}
 
                             <View
                               style={
@@ -505,7 +535,7 @@ export default function DiscoverScreen() {
                                 FEATURED
                               </Text>
                             </View>
-                          </View>
+                          </Pressable>
 
                           <View
                             style={
@@ -670,7 +700,16 @@ export default function DiscoverScreen() {
           <View
             style={styles.productCard}
           >
-            <View
+            <Pressable
+              onPress={() =>
+                navigation.navigate(
+                  'ProductDetails',
+                  {
+                    productId:
+                      item.productId,
+                  }
+                )
+              }
               style={[
                 styles.productImage,
                 {
@@ -680,13 +719,29 @@ export default function DiscoverScreen() {
                 },
               ]}
             >
-              <Ionicons
-                name={getProductIcon(
-                  item.category
-                )}
-                size={40}
-                color="rgba(255,255,255,0.85)"
-              />
+              {resolveMediaUrl(
+                item.imageUrl
+              ) ? (
+                <Image
+                  source={{
+                    uri: resolveMediaUrl(
+                      item.imageUrl
+                    )!,
+                  }}
+                  style={
+                    styles.marketImage
+                  }
+                  resizeMode="cover"
+                />
+              ) : (
+                <Ionicons
+                  name={getProductIcon(
+                    item.category
+                  )}
+                  size={40}
+                  color="rgba(255,255,255,0.85)"
+                />
+              )}
 
               {item.stockQuantity <=
                 5 && (
@@ -704,7 +759,7 @@ export default function DiscoverScreen() {
                   </Text>
                 </View>
               )}
-            </View>
+            </Pressable>
 
             <View
               style={styles.productBody}
@@ -1115,6 +1170,16 @@ const styles =
       height: 112,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+
+    marketImage: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
     },
 
     lowStockBadge: {
