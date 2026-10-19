@@ -1,42 +1,124 @@
-# CCB (Connect Communicate Belong) — Expo / React Native
+# CCB — Connect. Communicate. Belong.
 
-## One-time setup (in VS Code terminal)
+A community-focused mobile application designed to help South Africans connect with people, local communities, and small businesses.
 
-1. Make sure Node.js (LTS) is installed, then install Expo's CLI on demand (no global install needed):
-   ```bash
-   npx create-expo-app CCB --template blank-typescript
-   ```
-   Then copy the files from this project (`App.tsx`, `app.json`, `babel.config.js`, and everything in `src/`) into that generated `CCB` folder, overwriting the defaults.
+CCB is a personal portfolio project currently under development.
 
-   Or, if you already have a `CCB` folder from these files: just run `npm install` inside it — `package.json` already lists everything.
+## About the project
 
-2. Install dependencies:
-   ```bash
-   cd CCB
-   npm install
-   ```
+The goal of CCB is to bring communication and local community discovery into one mobile experience.
 
-3. Install the Expo Go app on your Android phone (Play Store), and make sure your phone and computer are on the **same Wi-Fi network**.
+The project gives me practical experience building mobile interfaces, connecting to REST APIs, and developing backend services.
 
-4. Start the dev server:
-   ```bash
-   npx expo start
-   ```
-   A QR code appears in the terminal. Open **Expo Go** on your Android phone and scan it — the app loads live on your device.
+## Technology stack
 
-## What's included so far
+### Mobile application
+- React Native and Expo
+- TypeScript
+- SQLite for local storage
+- React Navigation
+- React Native SVG
+- Outfit and DM Sans fonts
 
-- `src/theme/colors.ts` — the emerald/gold/charcoal/off-white design tokens
-- `src/theme/fonts.ts` — Outfit + DM Sans font tokens
-- `src/db/database.ts` — local SQLite schema + seed data (contacts, messages, communities, transactions) with SA names/context
-- `src/components/Logo.tsx` — the CCB speech-bubble logo (SVG)
-- `src/screens/onboarding/WelcomeScreen.tsx` — **Screen 1**: gradient welcome screen with logo, tagline, CTA buttons, language hint
-- `App.tsx` — loads fonts, initializes the DB, renders the Welcome screen
+### Backend
+- ASP.NET Core Web API
+- C#
+- Entity Framework Core
+- SQL Server
+- JWT authentication
 
-## Coming next (say "next screen" when ready)
+The backend is maintained separately and is not included in this repository.
 
-- Language selection + remaining onboarding steps
-- Bottom tab navigation (Home / Communities / Discover / Payments / Profile)
-- Home screen (chat list, active contacts carousel)
-- Chat screen (message bubbles, translation toggle)
-- Communities, Discover, Payments, Profile screens
+## Project status
+
+CCB is a work in progress. Screens, backend integration, and features are being developed and tested.
+
+The project includes a custom visual theme, reusable UI components, and local database setup. Some screens may contain demonstration data, which does not represent live services.
+
+## Planned capabilities
+
+- Phone-number onboarding and verification
+- Profile management with profile photos
+- Individual messaging
+- Community spaces
+- Local business discovery
+- Support for additional South African languages
+- Message translation
+- Low-data and offline messaging support
+- Payment integration
+
+These are development goals, not a list of completed features. English is the initial interface language.
+
+## Getting started
+
+### Requirements
+
+- Node.js LTS and npm
+- Expo Go on a compatible mobile device
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Quiet-Mkhavele04/ccb-mobile.git
+cd ccb-mobile
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the development server
+
+```bash
+npx expo start
+```
+
+Follow the terminal instructions to open the application.
+
+For an Android device, open Expo Go and scan the QR code. Your phone and computer should normally be connected to the same Wi-Fi network.
+
+### Backend configuration
+
+Features that communicate with the API require the separate CCB backend to be running and reachable from your device.
+
+Backend setup and API configuration instructions will be added as the integration is documented.
+
+## Project structure
+
+```text
+assets/          Images and other application assets
+src/
+  components/   Reusable UI components
+  db/           Local database setup
+  navigation/   Application navigation
+  screens/      Onboarding and main application screens
+  theme/        Colours and typography
+App.tsx         Application entry component
+```
+
+## Screenshots
+
+Screenshots of the application will be added as the interface develops.
+
+## What I am practising
+
+- Building reusable mobile UI components
+- Managing application state and navigation
+- Connecting mobile applications to REST APIs
+- Working with local and server databases
+- Implementing authentication flows
+- Tracking development with Git and GitHub
+
+## Developer
+
+**Quiet Excellent Mkhavele**
+
+Final-year Diploma in Information Technology student at Nelson Mandela University.
+
+Full-stack web and mobile developer with a particular interest in backend development.
+
+Seeking internship and graduate software development opportunities.
+
+[GitHub profile](https://github.com/Quiet-Mkhavele04)
