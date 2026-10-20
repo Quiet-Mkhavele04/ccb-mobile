@@ -23,6 +23,7 @@ import { getMyContacts, Contact } from '../../api/contactsApi';
 
 import {
   confirmTransfer,
+  createPaymentRequest,
   getPaymentPinStatus,
   savePaymentPin,
   startTransfer,
@@ -85,7 +86,11 @@ export default function SendMoneyScreen() {
         contactsResponse.contacts.filter(contact => contact.profileId !== null)
       );
 
-      setStage(pinResponse.hasPin ? 'contact' : 'setup-pin');
+      setStage(
+        mode === 'request' || pinResponse.hasPin
+          ? 'contact'
+          : 'setup-pin'
+      );
     } catch (loadError) {
       setError(
         loadError instanceof Error
@@ -132,7 +137,7 @@ export default function SendMoneyScreen() {
     }
   }
 
-  function handleAmountContinue() {
+  async function handleAmountContinue() {
     if (!selectedContact?.profileId) {
       setError('Choose a valid CCB contact.');
       return;
@@ -144,10 +149,27 @@ export default function SendMoneyScreen() {
     }
 
     if (mode === 'request') {
-      Alert.alert(
-        'Coming soon',
-        'Secure money requests will be connected in the next payment update.'
-      );
+      setBusy(true);
+      setError(null);
+
+      try {
+        await createPaymentRequest(
+          selectedContact.profileId,
+          numericAmount,
+          reference.trim() || null
+        );
+
+        setStage('success');
+      } catch (requestError) {
+        setError(
+          requestError instanceof Error
+            ? requestError.message
+            : 'Could not send the payment request.'
+        );
+      } finally {
+        setBusy(false);
+      }
+
       return;
     }
 
@@ -255,10 +277,16 @@ export default function SendMoneyScreen() {
             <Ionicons name="checkmark" size={40} color={light.offWhite} />
           </View>
 
-          <Text style={styles.successTitle}>Money sent!</Text>
+          <Text style={styles.successTitle}>
+            {mode === 'send'
+              ? 'Money sent!'
+              : 'Request sent!'}
+          </Text>
 
           <Text style={styles.successDetail}>
-            R{numericAmount.toFixed(2)} was sent to {selectedContact.name}.
+            {mode === 'send'
+              ? `R${numericAmount.toFixed(2)} was sent to ${selectedContact.name}.`
+              : `${selectedContact.name} was asked to pay R${numericAmount.toFixed(2)}.`}
           </Text>
 
           {reference.trim() ? (
@@ -444,7 +472,8 @@ export default function SendMoneyScreen() {
                 numericAmount ? numericAmount.toFixed(2) : '0.00'
               }`}
               disabled={numericAmount <= 0}
-              onPress={handleAmountContinue}
+              busy={busy}
+              onPress={() => void handleAmountContinue()}
             />
           </View>
         )}

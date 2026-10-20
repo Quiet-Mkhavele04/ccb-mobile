@@ -56,6 +56,43 @@ export type ConfirmedTransfer = {
   walletBalance: number;
 };
 
+export type PaymentRequest = {
+  paymentRequestId: number;
+  direction:
+    | 'incoming'
+    | 'outgoing';
+  requesterProfileId: number;
+  requesterName: string | null;
+  payerProfileId: number;
+  payerName: string | null;
+  amount: number;
+  reference: string | null;
+  status:
+    | 'Pending'
+    | 'Paid'
+    | 'Declined'
+    | 'Cancelled'
+    | 'Expired';
+  createdAt: string;
+  expiresAt: string;
+  respondedAt: string | null;
+  transactionId: number | null;
+};
+
+export type CreatedPaymentRequest = {
+  message: string;
+  paymentRequest: {
+    paymentRequestId: number;
+    payerProfileId: number;
+    payerName: string | null;
+    amount: number;
+    reference: string | null;
+    status: string;
+    createdAt: string;
+    expiresAt: string;
+  };
+};
+
 export class PaymentsApiError
   extends Error {
   status: number;
@@ -239,6 +276,88 @@ export async function confirmTransfer(
       body: JSON.stringify({
         challengeId,
         code,
+      }),
+    }
+  );
+}
+
+export async function createPaymentRequest(
+  payerProfileId: number,
+  amount: number,
+  reference: string | null
+): Promise<CreatedPaymentRequest> {
+  return authorizedFetch(
+    '/Transactions/requests',
+    {
+      method: 'POST',
+
+      headers: {
+        'Content-Type':
+          'application/json',
+      },
+
+      body: JSON.stringify({
+        payerProfileId,
+        amount,
+        reference,
+      }),
+    }
+  );
+}
+
+export async function getPaymentRequests():
+  Promise<{
+    requests: PaymentRequest[];
+  }> {
+  return authorizedFetch(
+    '/Transactions/requests'
+  );
+}
+
+export async function cancelPaymentRequest(
+  paymentRequestId: number
+): Promise<{
+  message: string;
+}> {
+  return authorizedFetch(
+    `/Transactions/requests/${paymentRequestId}/cancel`,
+    {
+      method: 'POST',
+    }
+  );
+}
+
+export async function declinePaymentRequest(
+  paymentRequestId: number
+): Promise<{
+  message: string;
+}> {
+  return authorizedFetch(
+    `/Transactions/requests/${paymentRequestId}/decline`,
+    {
+      method: 'POST',
+    }
+  );
+}
+
+export async function startPaymentRequestPayment(
+  paymentRequestId: number,
+  pin: string
+): Promise<TransferChallenge & {
+  paymentRequestId: number;
+}> {
+  return authorizedFetch(
+    `/Transactions/requests/${paymentRequestId}/pay/start`,
+    {
+      method: 'POST',
+
+      headers: {
+        'Content-Type':
+          'application/json',
+      },
+
+      body: JSON.stringify({
+        pin,
       }),
     }
   );
