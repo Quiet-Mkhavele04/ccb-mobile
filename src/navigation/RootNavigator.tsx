@@ -18,6 +18,9 @@ import CreateStatusScreen from
 import CommunityDetailScreen from
   '../screens/main/CommunityDetailScreen';
 
+import CreateCommunityScreen from
+  '../screens/main/CreateCommunityScreen';
+
 import BusinessProfileScreen from
   '../screens/main/BusinessProfileScreen';
 
@@ -95,6 +98,8 @@ export type RootStackParamList = {
   AddContact: undefined;
 
   CreateStatus: undefined;
+
+  CreateCommunity: undefined;
 
   ProductDetails: {
     productId: number;
@@ -237,6 +242,18 @@ export default function RootNavigator({
             animation: 'fade',
             presentation:
               'fullScreenModal',
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateCommunity"
+          component={
+            CreateCommunityScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
           }}
         />
 

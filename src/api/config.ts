@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  'http://10.202.226.31:5234/api';
+  'http://10.202.51.246:5234/api';
 
 console.log(
   'CCB API address:',
