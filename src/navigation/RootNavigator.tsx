@@ -21,6 +21,15 @@ import CommunityDetailScreen from
 import CreateCommunityScreen from
   '../screens/main/CreateCommunityScreen';
 
+import CreateCommunityEventScreen from
+  '../screens/main/CreateCommunityEventScreen';
+
+import CreateCommunityJobScreen from
+  '../screens/main/CreateCommunityJobScreen';
+
+import CreateCommunityListingScreen from
+  '../screens/main/CreateCommunityListingScreen';
+
 import BusinessProfileScreen from
   '../screens/main/BusinessProfileScreen';
 
@@ -100,6 +109,21 @@ export type RootStackParamList = {
   CreateStatus: undefined;
 
   CreateCommunity: undefined;
+
+  CreateCommunityEvent: {
+    communityId: number;
+    communityName: string;
+  };
+
+  CreateCommunityJob: {
+    communityId: number;
+    communityName: string;
+  };
+
+  CreateCommunityListing: {
+    communityId: number;
+    communityName: string;
+  };
 
   ProductDetails: {
     productId: number;
@@ -265,6 +289,42 @@ export default function RootNavigator({
           options={{
             animation:
               'slide_from_right',
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateCommunityEvent"
+          component={
+            CreateCommunityEventScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateCommunityJob"
+          component={
+            CreateCommunityJobScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateCommunityListing"
+          component={
+            CreateCommunityListingScreen
+          }
+          options={{
+            animation:
+              'slide_from_bottom',
+            presentation: 'modal',
           }}
         />
 

@@ -19,7 +19,9 @@
         {
           "photosPermission": "Allow CCB to access your photos so you can upload store and product images."
         }
-      ]
+      ],
+      "expo-splash-screen",
+      "expo-sqlite"
     ]
   }
 }
